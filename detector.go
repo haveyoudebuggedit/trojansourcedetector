@@ -128,6 +128,7 @@ func (d *detector) processFile(
 			0,
 		)
 	}
+	//nolint:gosec // Ignore G307 for now.
 	defer func() {
 		_ = fh.Close()
 	}()

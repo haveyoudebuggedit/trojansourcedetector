@@ -67,6 +67,7 @@ func readConfigFile(file string) (*trojansourcedetector.Config, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to open config file %s (%w)", file, err)
 	}
+	//nolint:gosec // Ignore G307 for now.
 	defer func() {
 		_ = fh.Close()
 	}()
