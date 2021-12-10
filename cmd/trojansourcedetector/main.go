@@ -33,7 +33,7 @@ func main() {
 	if len(errs.Get()) > 0 {
 		os.Exit(1)
 	} else {
-		fmt.Printf("No errors found.")
+		fmt.Printf("No errors found.\n")
 	}
 }
 
