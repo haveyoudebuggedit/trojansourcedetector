@@ -30,9 +30,54 @@ func (c *Config) Defaults() {
 	c.Directory = "."
 	c.DetectBIDI = true
 	c.Exclude = []string{
-		".git/*",
-		".git/*/*",
-		".git/*/*/*",
+		// Version control systems
+		".git/**",
+
+		// Image files. Do not include SVG here.
+		"**/*.gif",
+		"**/*.jpg",
+		"**/*.png",
+		"**/*.psd",
+		"**/*.ico",
+
+		// Audio files.
+		"**/*.wav",
+		"**/*.mp3",
+		"**/*.png",
+		"**/*.aiff",
+		"**/*.au",
+		"**/*.ogg",
+
+		// Executable or object files
+		"**/*.exe",
+		"**/*.so",
+		"**/*.dll",
+		"**/*.dylib",
+
+		// Compressed files
+		"**/*.tar",
+		"**/*.zip",
+		"**/*.gz",
+		"**/*.bz",
+		"**/*.z",
+		"**/*.rar",
+		"**/*.ear",
+
+		// Python
+		"**/*.whl",
+		"**/*.pyc",
+		"**/__pycache__/**",
+
+		// Java
+		"**/*.class",
+		"**/*.jar",
+
+		// PHP
+		"**/*.phar",
+
+		// Translations
+		"**/*.mo",
+		"**/*.pot",
 	}
 	c.DetectUnicode = false
 	c.Parallelism = 10
