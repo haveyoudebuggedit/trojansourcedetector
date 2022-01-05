@@ -12,8 +12,8 @@ COPY --from=build /srv/src/trojansourcedetector /
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /trojansourcedetector /entrypoint.sh
 
-RUN mkdir -p /github/workspace
-VOLUME /github/workspace
-WORKDIR /github/workspace
+RUN mkdir -p /work
+VOLUME /work
+WORKDIR /work
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/trojansourcedetector"]

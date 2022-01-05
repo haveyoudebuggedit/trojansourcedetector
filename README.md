@@ -26,6 +26,12 @@ You can also run it on any CI system by simply downloading the [released binary]
 ./trojansourcedetector
 ```
 
+Alternatively, you can also use the container image like this:
+
+```
+docker run -v $(pwd):/work --rm ghcr.io/haveyoudebuggedit/trojansourcedetector 
+```
+
 ## Configuration
 
 You can customize the behavior by providing a config file. This file is named `.trojansourcedetector.json` by default and has the following fields:
