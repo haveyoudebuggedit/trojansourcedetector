@@ -3,7 +3,6 @@ FROM golang AS build
 RUN mkdir -p /srv/src
 WORKDIR /srv/src
 COPY . /srv/src
-RUN go generate
 RUN go test -v ./...
 RUN go build -o trojansourcedetector cmd/trojansourcedetector/main.go
 

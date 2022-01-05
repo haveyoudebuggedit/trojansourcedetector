@@ -9,14 +9,16 @@ import (
 	"github.com/haveyoudebuggedit/trojansourcedetector"
 )
 
-//go:generate go run cmd/testdata/main.go
-
 func TestE2E(t *testing.T) {
-	assertFileExists(t, "testdata/bidi.txt")
-	assertFileExists(t, "testdata/unicode.txt")
+	testDir := t.TempDir()
+
+	createTestData(t, testDir)
+
+	assertFileExists(t, filepath.Join(testDir, "bidi.txt"))
+	assertFileExists(t, filepath.Join(testDir, "unicode.txt"))
 
 	detector := trojansourcedetector.New(&trojansourcedetector.Config{
-		Directory:     "testdata",
+		Directory:     testDir,
 		DetectUnicode: true,
 		DetectBIDI:    true,
 		Parallelism:   10,
@@ -35,11 +37,20 @@ func TestE2E(t *testing.T) {
 	assertHasError(t, errs, trojansourcedetector.ErrBIDI, "bidi.txt", 1, 44)
 	assertHasError(t, errs, trojansourcedetector.ErrUnicode, "unicode.txt", 1, 29)
 	assertHasError(t, errs, trojansourcedetector.ErrUnicode, "unicode.txt", 1, 30)
+	assertHasNoErrors(t, errs, "testsymlink")
+}
+
+func assertHasNoErrors(t *testing.T, errs trojansourcedetector.Errors, file string) {
+	for _, err := range errs.Get() {
+		if filepath.ToSlash(err.File()) == file {
+			t.Fatalf("unexpected %s error in file %s (%s)", err.Code(), err.File(), err.Details())
+		}
+	}
 }
 
 func assertFileExists(t *testing.T, file string) {
 	if _, err := os.Stat(file); err != nil {
-		t.Fatalf("file does not exist: %s did you run go generate? (%v)", file, err)
+		t.Fatalf("file does not exist: %s (%v)", file, err)
 	}
 }
 
