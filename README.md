@@ -71,9 +71,8 @@ go build cmd/trojansourcedetector/main.go
 
 ## Running tests
 
-In order to run tests, you will need to run the following two commands:
+In order to run tests, you will need to run the following command:
 
 ```
-go generate
 go test -v ./...
 ```

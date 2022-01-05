@@ -53,7 +53,28 @@ func (d *detector) Run() Errors {
 			if err != nil {
 				return err
 			}
-			if info.IsDir() {
+			switch info.Mode().Type() {
+			case os.ModeDir:
+				// Subdirectories will be listed anyway.
+				return nil
+			case os.ModeSymlink:
+				// We ignore symlinks because they either point to a file in the project, which is checked
+				// anyway, or it points outside of the project, in which case we don't care.
+				return nil
+			case os.ModeDevice:
+				// We can't do anything with device nodes.
+				return nil
+			case os.ModeNamedPipe:
+				// We can't do anything with named pipes.
+				return nil
+			case os.ModeSocket:
+				// We can't do anything with sockets.
+				return nil
+			case os.ModeCharDevice:
+				// We can't do anything with character devices.
+				return nil
+			case os.ModeIrregular:
+				// Irregular file?
 				return nil
 			}
 			path = filepath.ToSlash(path)

@@ -1,10 +1,4 @@
 #!/bin/bash
-go generate
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-    echo -e "Failed to run go generate."
-    exit $RESULT
-fi
 go test -v ./... >/tmp/gotest.txt 2>/tmp/depdownload.txt
 RESULT=$?
 if [ "$(cat /tmp/depdownload.txt | wc -l)" -ne 0 ]; then
