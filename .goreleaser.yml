@@ -14,6 +14,14 @@ archives:
     files:
       - LICENSE.md
       - README.md
+dockers:
+  - dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - ghcr.io/haveyoudebuggedit/trojansourcedetector:{{ .Tag }}
+      - ghcr.io/haveyoudebuggedit/trojansourcedetector:v{{ .Major }}
+      - ghcr.io/haveyoudebuggedit/trojansourcedetector:latest
+    extra_files:
+      - entrypoint.sh
 gomod:
   proxy: true
   env:
