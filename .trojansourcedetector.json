@@ -2,8 +2,7 @@
   "exclude": [
     ".git/**",
     ".github/scripts/*.sh",
-    "dist/**",
-    "testdata/**"
+    "dist/**"
   ],
   "detect_unicode": true,
   "detect_bidi": true

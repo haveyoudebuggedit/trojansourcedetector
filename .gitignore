@@ -1,4 +1,3 @@
-testdata/*.txt
 .idea
 *.iml
 dist/*
