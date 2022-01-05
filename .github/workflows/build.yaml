@@ -120,7 +120,7 @@ jobs:
         with:
           go-version: 1.17
       - name: Login to GitHub Container Registry
-        if: ${{ github.event_name == 'create' && github.event.ref_type == 'tag' }}
+        if: ${{ github.event_name == 'create' && github.event.payload.ref_type == 'tag' }}
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
