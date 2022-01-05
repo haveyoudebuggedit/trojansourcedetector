@@ -10,8 +10,17 @@ import (
 	"sync"
 )
 
-// New creates a composite detector based on a configuration passed.
+// New creates a composite detector based on a configuration passed. Will panic if an error happens.
 func New(config *Config) Detector {
+	detector, err := NewWithError(config)
+	if err != nil {
+		panic(err)
+	}
+	return detector
+}
+
+// NewWithError creates a composite detector based on a configuration passed.
+func NewWithError(config *Config) (Detector, error) {
 	var fileDetectors []SingleFileDetector
 
 	if config == nil {
@@ -26,10 +35,30 @@ func New(config *Config) Detector {
 		fileDetectors = append(fileDetectors, &unicodeDetector{})
 	}
 
-	return &detector{
-		config:        config,
-		fileDetectors: fileDetectors,
+	compiledIncludes := make([]pattern, len(config.Include))
+	for i, include := range config.Include {
+		var err error
+		compiledIncludes[i], err = compile(include)
+		if err != nil {
+			return nil, fmt.Errorf("failed to compile include pattern %s (%w)", include, err)
+		}
 	}
+
+	compiledExcludes := make([]pattern, len(config.Exclude))
+	for i, exclude := range config.Exclude {
+		var err error
+		compiledExcludes[i], err = compile(exclude)
+		if err != nil {
+			return nil, fmt.Errorf("failed to compile exclude pattern %s (%w)", exclude, err)
+		}
+	}
+
+	return &detector{
+		fileDetectors:   fileDetectors,
+		config:          config,
+		compiledInclude: compiledIncludes,
+		compiledExclude: compiledExcludes,
+	}, nil
 }
 
 // Detector detects malicious unicode code points in a directory based on the configuration.
@@ -40,8 +69,10 @@ type Detector interface {
 }
 
 type detector struct {
-	fileDetectors []SingleFileDetector
-	config        *Config
+	fileDetectors   []SingleFileDetector
+	config          *Config
+	compiledInclude []pattern
+	compiledExclude []pattern
 }
 
 func (d *detector) Run() Errors {
@@ -86,11 +117,8 @@ func (d *detector) Run() Errors {
 
 			if len(d.config.Include) != 0 {
 				match := false
-				for _, include := range d.config.Include {
-					matches, err := filepath.Match(include, reportedPath)
-					if err != nil {
-						return err
-					}
+				for _, include := range d.compiledInclude {
+					matches := include.match(reportedPath)
 					if matches {
 						match = true
 						break
@@ -100,11 +128,8 @@ func (d *detector) Run() Errors {
 					return nil
 				}
 			}
-			for _, exclude := range d.config.Exclude {
-				matches, err := filepath.Match(exclude, reportedPath)
-				if err != nil {
-					return err
-				}
+			for _, exclude := range d.compiledExclude {
+				matches := exclude.match(reportedPath)
 				if matches {
 					return nil
 				}
