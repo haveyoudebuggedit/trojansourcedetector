@@ -190,7 +190,7 @@ var tokenizerRules = []tokenizerRule{
 	},
 	{
 		stateStart,
-		regexp.MustCompile(`^[^/]+`),
+		regexp.MustCompile(`^[^/*?!^]+`),
 		stateStart,
 		func(matches [][]byte) string {
 			return regexp.QuoteMeta(string(matches[0]))

@@ -5,6 +5,97 @@ import (
 	"os"
 )
 
+// Defaults adds the default value for each filed.
+func (c *Config) Defaults() {
+	c.Directory = "."
+	c.DetectBIDI = true
+	c.Exclude = []string{
+		// Version control systems
+		".git/**",
+		".hg/**",
+
+		// Image files. Do not include SVG here.
+		"**/*.ai",
+		"**/*.bmp",
+		"**/*.gif",
+		"**/*.jpg",
+		"**/*.png",
+		"**/*.psd",
+		"**/*.ico",
+		"**/*.icns",
+
+		// Audio files.
+		"**/*.wav",
+		"**/*.mp3",
+		"**/*.aiff",
+		"**/*.au",
+		"**/*.ogg",
+
+		// Executable or object files
+		"**/*.a",
+		"**/*.bin",
+		"**/*.exe",
+		"**/*.so",
+		"**/*.dll",
+		"**/*.dylib",
+
+		// Compressed files
+		"**/*.tar",
+		"**/*.zip",
+		"**/*.gz",
+		"**/*.bz",
+		"**/*.bz2",
+		"**/*.z",
+		"**/*.lzo",
+		"**/*.rar",
+		"**/*.ear",
+		"**/*.xz",
+		"**/*.zstd",
+
+		// Python
+		"**/*.whl",
+		"**/*.pyc",
+		"**/__pycache__/**",
+
+		// Java
+		"**/*.class",
+		"**/*.jar",
+
+		// PHP
+		"**/*.phar",
+
+		// Fonts
+		"**/*.woff",
+		"**/*.woff2",
+
+		// Translations
+		"**/*.mo",
+		"**/*.pot",
+
+		// Documents
+		"**/*.doc",
+		"**/*.docx",
+		"**/*.odf",
+		"**/*.pdf",
+		"**/*.chm",
+
+		// Spreadsheets
+		"**/*.xls",
+		"**/*.xlsx",
+		"**/*.ods",
+
+		// Presentations
+		"**/*.ppt",
+		"**/*.pptx",
+		"**/*.ods",
+
+		// Packet capture
+		"**/*.pcap",
+	}
+	c.DetectUnicode = false
+	c.Parallelism = 10
+}
+
 // Config is the base configuration structure of the trojan source detector.
 type Config struct {
 	// Directory indicates the directory to scan.
@@ -23,64 +114,6 @@ type Config struct {
 	DetectBIDI bool `json:"detect_bidi"`
 	// Parallelism sets how many parallel scans should run.
 	Parallelism uint `json:"parallelism"`
-}
-
-// Defaults adds the default value for each filed.
-func (c *Config) Defaults() {
-	c.Directory = "."
-	c.DetectBIDI = true
-	c.Exclude = []string{
-		// Version control systems
-		".git/**",
-
-		// Image files. Do not include SVG here.
-		"**/*.gif",
-		"**/*.jpg",
-		"**/*.png",
-		"**/*.psd",
-		"**/*.ico",
-
-		// Audio files.
-		"**/*.wav",
-		"**/*.mp3",
-		"**/*.png",
-		"**/*.aiff",
-		"**/*.au",
-		"**/*.ogg",
-
-		// Executable or object files
-		"**/*.exe",
-		"**/*.so",
-		"**/*.dll",
-		"**/*.dylib",
-
-		// Compressed files
-		"**/*.tar",
-		"**/*.zip",
-		"**/*.gz",
-		"**/*.bz",
-		"**/*.z",
-		"**/*.rar",
-		"**/*.ear",
-
-		// Python
-		"**/*.whl",
-		"**/*.pyc",
-		"**/__pycache__/**",
-
-		// Java
-		"**/*.class",
-		"**/*.jar",
-
-		// PHP
-		"**/*.phar",
-
-		// Translations
-		"**/*.mo",
-		"**/*.pot",
-	}
-	c.DetectUnicode = false
-	c.Parallelism = 10
 }
 
 // Validate validates the configuration and returns an error if the configuration is invalid.

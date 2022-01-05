@@ -78,58 +78,7 @@ When including and excluding files the following patterns are supported:
 
 ## Files excluded by default
 
-By default, the following patterns are excluded:
-
-```
-// Version control systems
-.git/**
-
-// Image files. Do not include SVG here.
-**/*.gif
-**/*.jpg
-**/*.png
-**/*.psd
-**/*.ico
-
-// Audio files.
-**/*.wav
-**/*.mp3
-**/*.png
-**/*.aiff
-**/*.au
-**/*.ogg
-
-// Executable or object files
-**/*.exe
-**/*.so
-**/*.dll
-**/*.dylib
-
-// Compressed files
-**/*.tar
-**/*.zip
-**/*.gz
-**/*.bz
-**/*.z
-**/*.rar
-**/*.ear
-
-// Python
-**/*.whl
-**/*.pyc
-**/__pycache__/**
-
-// Java
-**/*.class
-**/*.jar
-
-// PHP
-**/*.phar
-
-// Translations
-**/*.mo
-**/*.pot
-```
+Trojan Source Detector contains a list of default excludes, which you can find in [config.go](config.go). This is a conservative list of file patterns that are almost certainly going to be binary files. We highly encourage you to tune the excluded files list to your project.
 
 ## Building
 

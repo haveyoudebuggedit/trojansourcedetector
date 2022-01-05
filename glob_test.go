@@ -108,6 +108,13 @@ func TestGlob(t *testing.T) {
 				".git/config",
 			},
 		},
+		{
+			pattern: "third_party/icu/data/icu_conversion_data*",
+			shouldMatch: []string{
+				"third_party/icu/data/icu_conversion_data.c.gz.ab",
+			},
+			shouldNotMatch: []string{},
+		},
 	}
 
 	for _, entry := range globData {
